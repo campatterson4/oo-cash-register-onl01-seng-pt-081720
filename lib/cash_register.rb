@@ -1,42 +1,48 @@
-class CashRegister
+class CashRegister 
   attr_accessor :discount, :total
-  
 
-  def initialize(discount = 0)
+  def initialize(discount=0)
+    @discount = discount 
     @total = 0
-    @discount = discount
-    @cart = []
-  end
-
-  def add_item(item, price, quantity = 1)
-    item_info = {}
-    item_info[:name] = item
-    item_info[:price] = price
-    item_info[:quantity] = quantity
-
-    @cart << item_info
-
-    @total += price * quantity
-
-  end
-
+    @items = []
+    @last_item = [] 
+  end 
+  
   def apply_discount
-    if @discount == 0
-      return "There is no discount to apply."
-    end
-    @total -= @total * @discount / 100
-    return "After the discount, the total comes to $#{@total}."
-  end 
-
-  def items
-    item_names = []
-    @cart.each do | item_info |
-      #test expects product name * quantity...
-      for qty in 1..item_info[:quantity] 
-        item_names << item_info[:name]
-      end 
+    if discount != 0 
+      @total -= (@total * (@discount / 100.to_f))
+      "After the discount, the total comes to $#{@total.to_i}."
+    else 
+      "There is no discount to apply."
     end 
-    item_names
   end 
+  
+  def add_item(title, price, quantity=1)
+    @total += price * quantity 
+    quantity.times do 
+      @items << title 
+    end 
+    @last_item = price * quantity 
+  end 
+  
+  def items 
+    @items 
+  end 
+  
+  def void_last_transaction 
+     @items.delete_at(-1)
+    self.total = self.total - @last_item
+  end 
+end 
 
-end
+list = CashRegister.new(20) #=>#<CashRegister:0x005616084063b0 @discount=20, @total=0>
+list.add_item("eggs", 1.50, 3) #=> 4.50
+list.add_item("skirt steak", 7.99) #=> 7.99 
+list.add_item("apple pie", 3.99, 2) #=> 7.98
+list.total #=> 20.47
+list.items #=> ["eggs", "eggs", "eggs", "skirt steak", "apple pie", "apple pie"]
+list.apply_discount #=> "After the discount, the total comes to $16."
+list.void_last_transaction
+list.items  #=> ["eggs", "eggs", "eggs", "skirt steak", "apple pie"]
+list.total #=> 8.02
+list #=> #<CashRegister:0x0055d3156eb598 @discount=20, @total=
