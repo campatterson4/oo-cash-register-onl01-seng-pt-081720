@@ -39,10 +39,3 @@ list = CashRegister.new(20) #=>#<CashRegister:0x005616084063b0 @discount=20, @to
 list.add_item("eggs", 1.50, 3) #=> 4.50
 list.add_item("skirt steak", 7.99) #=> 7.99 
 list.add_item("apple pie", 3.99, 2) #=> 7.98
-list.total #=> 20.47
-list.items #=> ["eggs", "eggs", "eggs", "skirt steak", "apple pie", "apple pie"]
-list.apply_discount #=> "After the discount, the total comes to $16."
-list.void_last_transaction
-list.items  #=> ["eggs", "eggs", "eggs", "skirt steak", "apple pie"]
-list.total #=> 8.02
-list #=> #<CashRegister:0x0055d3156eb598 @discount=20, @total=
